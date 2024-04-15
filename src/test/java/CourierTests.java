@@ -90,26 +90,33 @@ public class CourierTests {
     }
 
 
+/*
     @After
     public void cleanUp() {
         if (id != null && !id.isEmpty()) { // Проверить, что id был получен
             client.deleteCourierById(id);
 
-        }
-    }
+        }*/
+
     @Test
     @DisplayName("Creating two couriers impossible")
     @Description("Нельзя создать двух одинаковых курьеров, негативный тест")
     public void creatingTwoCouriersImpossible() {
 
-        Courier courier = Courier.create("tytyfrttry", "12345", "Vasya");
+        Courier courier = Courier.create("testTwoCourier", "12345", "Vasya");
         ValidatableResponse response = client.createCourier(courier);
 
-        ValidatableResponse response2 = client.createCourier(courier);
+        Courier secondCourier = Courier.create("testTwoCourier", "565656", "Vasya");
+        ValidatableResponse response2 = client.createCourier(secondCourier);
 
-        response.assertThat().statusCode(409)
+        response2.assertThat().statusCode(409)
                 .body("code", equalTo(409))
                 .body("message", equalTo("Этот логин уже используется. Попробуйте другой."));
+
+        ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
+        loginResponse.extract().jsonPath().getString("id");
+
+        id = loginResponse.extract().jsonPath().getString("id");
 
 
     }
@@ -125,6 +132,7 @@ public class CourierTests {
         response.assertThat().statusCode(400)
                 .body("code", equalTo(400))
                 .body("message", equalTo("Недостаточно данных для создания учетной записи"));
+
 
     }
     @Test
@@ -182,14 +190,27 @@ public class CourierTests {
     public void createAUserWithAUsernameThatAlreadyExists() {
 
 
-        Courier courier = Courier.create("trfdfgfgf", "12345", "Vasya");
+        Courier courier = Courier.create("bdgfdfggf", "12345", "Vasya");
         ValidatableResponse response = client.createCourier(courier);
 
-        courier = Courier.create("trfdfdfrfd", "565656", "Vanya");
-        ValidatableResponse response2 = client.createCourier(courier);
+        //courier = Courier.create("rrfdfggf", "565656", "Vanya");
+        //client.createCourier(courier);
+        Courier secondCourier = Courier.create("bdgfdfggf", "565656", "Petya");
+        ValidatableResponse response2 = client.createCourier(secondCourier);
 
-        response.assertThat().statusCode(409)
+        response2.assertThat().statusCode(409)
                 .body("code", equalTo(409))
                 .body("message", equalTo("Этот логин уже используется. Попробуйте другой."));
+
+        ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
+        loginResponse.extract().jsonPath().getString("id");
+
+        id = loginResponse.extract().jsonPath().getString("id");
     }
+      @After
+      public void cleanUp() {
+          if (id != null && !id.isEmpty()) { // Проверить, что id был получен
+              client.deleteCourierById(id);
+          }
+      }
 }

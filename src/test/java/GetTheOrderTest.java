@@ -16,14 +16,14 @@ import static org.hamcrest.Matchers.notNullValue;
 
 public class GetTheOrderTest {
     private String id;
-    private ScooterClient client;
+
 
     @Test
     @DisplayName("Get the order")
     @Description("Получение списка заказов")
     public void getTheOrder() {
         ScooterClientImpl client = new ScooterClientImpl();
-        Courier courier = Courier.create("tfdadfesdfi", "12345", "Vasya");
+        Courier courier = Courier.create("tfdваfesdfi", "12345", "Vasya");
         client.createCourier(courier);
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
         String courierId = loginResponse.extract().jsonPath().getString("id");

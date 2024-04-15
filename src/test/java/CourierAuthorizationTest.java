@@ -25,13 +25,6 @@ public class CourierAuthorizationTest {
         client = new ScooterClientImpl();
     }
 
-    @After
-    public void cleanUp() {
-        if (id != null && !id.isEmpty()) { // Проверить, что id был получен
-            client.deleteCourierById(id);
-
-        }
-    }
 
     @Test
     @DisplayName("The courier can log in with all required fields")
@@ -40,7 +33,7 @@ public class CourierAuthorizationTest {
 
 
         Courier courier = Courier.create("testfrghyui", "12345", "Oleg");
-        ValidatableResponse response = client.createCourier(courier);
+        client.createCourier(courier);
 
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
         loginResponse.extract().jsonPath().getString("id");
@@ -55,12 +48,23 @@ public class CourierAuthorizationTest {
     @Description("Если авторизоваться под несуществующим пользователем, запрос возвращает ошибку, негативный тест")
     public void requestWithAnIncorrectLoginAndPassword() {
 
+        Courier courier = Courier.create("tedsdsyui", "12345", "Oleg");
+        client.createCourier(courier);
+
         Credentials wrongCredentials = Credentials.withWrongCredentials("vcvcggfgfaa", "89898783434");
-        ValidatableResponse loginResponse = client.login(wrongCredentials);
-        loginResponse
+        ValidatableResponse loginResponse2 = client.login(wrongCredentials);
+
+        loginResponse2
                 .assertThat()
                 .statusCode(404) // или другой код ошибки, который ожидается
                 .body("message", equalTo("Учетная запись не найдена"));
+
+        ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
+        loginResponse.extract().jsonPath().getString("id");
+
+        id = loginResponse.extract().jsonPath().getString("id");
+
+
 
     }
 
@@ -69,22 +73,22 @@ public class CourierAuthorizationTest {
     @Description("Cистема вернёт ошибку, если неправильно указать логин, негативный тест")
     public void requestWithAnIncorrectLogin() {
 
-        Courier courier = Courier.create("testfrgsss", "12345", "Oleg");
-        ValidatableResponse response = client.createCourier(courier);
+        Courier courier = Courier.create("eerghgfrgsss", "12345", "Oleg");
+        client.createCourier(courier);
 
         Credentials wrongCredentials = Credentials.withWrongCredentials("dfdfdfdfd", "12345");
-        ValidatableResponse loginResponse = client.login(wrongCredentials);
+        ValidatableResponse loginResponse2 = client.login(wrongCredentials);
 
-        loginResponse
+        loginResponse2
                 .assertThat()
                 .statusCode(404) // или другой код ошибки, который ожидается
                 .body("message", equalTo("Учетная запись не найдена"));
 
-        ValidatableResponse loginResponse2 = client.login(Credentials.fromCourier(courier));
-        int courierId = loginResponse2.extract().jsonPath().getInt("id");
-        if (courierId > 0) {
-            client.deleteCourierById(Integer.toString(courierId));
-        }
+        ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
+        loginResponse.extract().jsonPath().getString("id");
+
+        id = loginResponse.extract().jsonPath().getString("id");
+
 
     }
 
@@ -93,22 +97,22 @@ public class CourierAuthorizationTest {
     @Description("Cистема вернёт ошибку, если неправильно указать пароль, негативный тест")
     public void requestWithAnIncorrectPassword() {
 
-        Courier courier = Courier.create("teswdsdf", "12345", "Oleg");
-        ValidatableResponse response = client.createCourier(courier);
+        Courier courier = Courier.create("tfdfdsdf", "12345", "Oleg");
+        client.createCourier(courier);
 
         Credentials wrongCredentials = Credentials.withWrongCredentials("teswdsdf", "54321");
-        ValidatableResponse loginResponse = client.login(wrongCredentials);
+        ValidatableResponse loginResponse2 = client.login(wrongCredentials);
 
-        loginResponse
+        loginResponse2
                 .assertThat()
                 .statusCode(404) // или другой код ошибки, который ожидается
                 .body("message", equalTo("Учетная запись не найдена"));
 
-        ValidatableResponse loginResponse2 = client.login(Credentials.fromCourier(courier));
-        int courierId = loginResponse2.extract().jsonPath().getInt("id");
-        if (courierId > 0) {
-            client.deleteCourierById(Integer.toString(courierId));
-        }
+        ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
+        loginResponse.extract().jsonPath().getString("id");
+
+        id = loginResponse.extract().jsonPath().getString("id");
+
 
     }
 
@@ -117,22 +121,22 @@ public class CourierAuthorizationTest {
     @Description("При успешной авторизации возвращается ID курьера")
     public void successfulLoginReturnsId() {
         // Создаем нового курьера
-        Courier courier = Courier.create("testLoginn", "testPassword", "Oleg");
-        ValidatableResponse createCourierResponse = client.createCourier(courier);
+        Courier courier = Courier.create("tejklfn", "testPassword", "Oleg");
+        client.createCourier(courier);
 
         // Авторизуемся с созданным курьером
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
+        loginResponse.extract().jsonPath().getString("id");
+        id = loginResponse.extract().jsonPath().getString("id");
 
 
-        int courierId = loginResponse.extract().jsonPath().getInt("id");
+        int id = loginResponse.extract().jsonPath().getInt("id");
 
         // Проверяем, что ID возвращается и является положительным числом
-        assertTrue("Courier ID should be a positive number", courierId > 0);
+        assertTrue("Courier ID should be a positive number", id > 0);
 
-        // Удаляем созданного курьера, если тест завершился успешно
-        if (courierId > 0) {
-            client.deleteCourierById(Integer.toString(courierId));
-        }
+
+
 
     }
 
@@ -141,7 +145,7 @@ public class CourierAuthorizationTest {
     @Description("Тест проверяет, что при отсутствии поля login в запросе возвращается ошибка")
     public void requestWithoutLoginFieldReturnsError() {
         // Создаем курьера для проверки
-        Courier courier = Courier.create("testWithoutLogin", "12345", "Oleg");
+        Courier courier = Courier.create("tebnbnnbLogin", "12345", "Oleg");
         ValidatableResponse createCourierResponse = client.createCourier(courier);
 
         // Отправляем запрос без поля login
@@ -156,11 +160,11 @@ public class CourierAuthorizationTest {
                 .statusCode(400)
                 .body("message", equalTo("Недостаточно данных для входа"));
 
-        ValidatableResponse loginResponse2 = client.login(Credentials.fromCourier(courier));
-        int courierId = loginResponse2.extract().jsonPath().getInt("id");
-        if (courierId > 0) {
-            client.deleteCourierById(Integer.toString(courierId));
-        }
+        ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
+        loginResponse.extract().jsonPath().getString("id");
+
+        id = loginResponse.extract().jsonPath().getString("id");
+
 
     }
 
@@ -168,17 +172,17 @@ public class CourierAuthorizationTest {
 
     @DisplayName("Request without password field returns an error")
     @Description("Тест проверяет, что при отсутствии поля password в запросе возвращается ошибка")
-    @Ignore("Причина игнорирования этого теста")
+    @Ignore("504 ошибка от сервера, тест должен проходить")
     public void requestWithoutPasswordFieldReturnsError() {
         // Создаем курьера для проверки
-        Courier courier = Courier.create("testdsfdfrt", "12343", "Petya");
+        Courier courier = Courier.create("yhduLogin", "12343", "Oleg");
         ValidatableResponse createCourierResponse = client.createCourier(courier);
 
         // Отправляем запрос без поля password
-        Map<String, String>requestBodys = new HashMap<>();
-        requestBodys.put("login", "testdsdsd");
-        requestBodys.put("firstName", "Oleg");
-        ValidatableResponse errorResponse = client.sendRequestWithoutPasswordField(requestBodys);
+        Map<String, String>requestBody = new HashMap<>();
+        requestBody.put("login", "yhduLogin");
+        requestBody.put("firstName", "Oleg");
+        ValidatableResponse errorResponse = client.sendRequestWithoutPasswordField(requestBody);
 
         // Проверяем, что возвращается ожидаемая ошибка
         errorResponse
@@ -186,10 +190,17 @@ public class CourierAuthorizationTest {
                 .statusCode(400)
                 .body("message", equalTo("Недостаточно данных для входа"));
 
-        ValidatableResponse loginResponse2 = client.login(Credentials.fromCourier(courier));
-        int courierId = loginResponse2.extract().jsonPath().getInt("id");
-        if (courierId > 0) {
-            client.deleteCourierById(Integer.toString(courierId));
+        ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
+        loginResponse.extract().jsonPath().getString("id");
+
+        id = loginResponse.extract().jsonPath().getString("id");
+
+    }
+    @After
+    public void cleanUp() {
+        if (id != null && !id.isEmpty()) { // Проверить, что id был получен
+            client.deleteCourierById(id);
+
         }
     }
 }

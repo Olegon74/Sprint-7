@@ -13,7 +13,6 @@ import org.junit.runners.Parameterized;
 public class CreateOrderTest {
     private OrderClient orderClient;
     private List<String> colour;
-    private int trackId;
 
     public CreateOrderTest(List<String> colour) {
         this.colour = colour;
