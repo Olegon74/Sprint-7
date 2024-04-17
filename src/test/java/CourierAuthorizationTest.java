@@ -61,7 +61,6 @@ public class CourierAuthorizationTest {
 
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
         loginResponse.extract().jsonPath().getString("id");
-
         id = loginResponse.extract().jsonPath().getString("id");
 
 
@@ -86,7 +85,6 @@ public class CourierAuthorizationTest {
 
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
         loginResponse.extract().jsonPath().getString("id");
-
         id = loginResponse.extract().jsonPath().getString("id");
 
 
@@ -110,7 +108,6 @@ public class CourierAuthorizationTest {
 
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
         loginResponse.extract().jsonPath().getString("id");
-
         id = loginResponse.extract().jsonPath().getString("id");
 
 
@@ -128,7 +125,6 @@ public class CourierAuthorizationTest {
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
         loginResponse.extract().jsonPath().getString("id");
         id = loginResponse.extract().jsonPath().getString("id");
-
 
         int id = loginResponse.extract().jsonPath().getInt("id");
 
@@ -162,9 +158,7 @@ public class CourierAuthorizationTest {
 
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
         loginResponse.extract().jsonPath().getString("id");
-
         id = loginResponse.extract().jsonPath().getString("id");
-
 
     }
 
@@ -192,7 +186,6 @@ public class CourierAuthorizationTest {
 
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
         loginResponse.extract().jsonPath().getString("id");
-
         id = loginResponse.extract().jsonPath().getString("id");
 
     }

@@ -33,9 +33,7 @@ public class CourierTests {
 
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
         loginResponse.extract().jsonPath().getString("id");
-
         id = loginResponse.extract().jsonPath().getString("id");
-
 
     }
 
@@ -50,14 +48,13 @@ public class CourierTests {
 
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
         loginResponse.extract().jsonPath().getString("id");
-
         id = loginResponse.extract().jsonPath().getString("id");
     }
 
     @Test
     @DisplayName("The сorrect response сode")
     @Description("Запрос возвращает правильный код, позитивный тест")
-    public void theСorrectResponseCode() {
+    public void theCorrectResponseCode() {
 
 
         Courier courier = Courier.create("testfryyui", "12345", "Vasya");
@@ -65,7 +62,6 @@ public class CourierTests {
 
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
         loginResponse.extract().jsonPath().getString("id");
-
         id = loginResponse.extract().jsonPath().getString("id");
 
         response.assertThat().statusCode(201);
@@ -83,20 +79,11 @@ public class CourierTests {
 
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
         loginResponse.extract().jsonPath().getString("id");
-
         id = loginResponse.extract().jsonPath().getString("id");
 
         response.assertThat().body("ok", equalTo(true));
     }
 
-
-/*
-    @After
-    public void cleanUp() {
-        if (id != null && !id.isEmpty()) { // Проверить, что id был получен
-            client.deleteCourierById(id);
-
-        }*/
 
     @Test
     @DisplayName("Creating two couriers impossible")
@@ -104,7 +91,7 @@ public class CourierTests {
     public void creatingTwoCouriersImpossible() {
 
         Courier courier = Courier.create("testTwoCourier", "12345", "Vasya");
-        ValidatableResponse response = client.createCourier(courier);
+        client.createCourier(courier);
 
         Courier secondCourier = Courier.create("testTwoCourier", "565656", "Vasya");
         ValidatableResponse response2 = client.createCourier(secondCourier);
@@ -115,9 +102,7 @@ public class CourierTests {
 
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
         loginResponse.extract().jsonPath().getString("id");
-
         id = loginResponse.extract().jsonPath().getString("id");
-
 
     }
 
@@ -132,7 +117,6 @@ public class CourierTests {
         response.assertThat().statusCode(400)
                 .body("code", equalTo(400))
                 .body("message", equalTo("Недостаточно данных для создания учетной записи"));
-
 
     }
     @Test
@@ -193,8 +177,6 @@ public class CourierTests {
         Courier courier = Courier.create("bdgfdfggf", "12345", "Vasya");
         ValidatableResponse response = client.createCourier(courier);
 
-        //courier = Courier.create("rrfdfggf", "565656", "Vanya");
-        //client.createCourier(courier);
         Courier secondCourier = Courier.create("bdgfdfggf", "565656", "Petya");
         ValidatableResponse response2 = client.createCourier(secondCourier);
 
@@ -204,7 +186,6 @@ public class CourierTests {
 
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
         loginResponse.extract().jsonPath().getString("id");
-
         id = loginResponse.extract().jsonPath().getString("id");
     }
       @After
