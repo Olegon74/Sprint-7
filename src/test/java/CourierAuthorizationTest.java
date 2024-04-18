@@ -37,7 +37,6 @@ public class CourierAuthorizationTest {
 
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
         loginResponse.extract().jsonPath().getString("id");
-
         id = loginResponse.extract().jsonPath().getString("id");
 
 
@@ -142,7 +141,7 @@ public class CourierAuthorizationTest {
     public void requestWithoutLoginFieldReturnsError() {
         // Создаем курьера для проверки
         Courier courier = Courier.create("tebnbnnbLogin", "12345", "Oleg");
-        ValidatableResponse createCourierResponse = client.createCourier(courier);
+        client.createCourier(courier);
 
         // Отправляем запрос без поля login
         Map<String, String> requestBody = new HashMap<>();
@@ -169,12 +168,12 @@ public class CourierAuthorizationTest {
     @Ignore("504 ошибка от сервера, тест должен проходить")
     public void requestWithoutPasswordFieldReturnsError() {
         // Создаем курьера для проверки
-        Courier courier = Courier.create("yhduLogin", "12343", "Oleg");
-        ValidatableResponse createCourierResponse = client.createCourier(courier);
+        Courier courier = Courier.create("yhduLhgogin", "12343", "Oleg");
+        client.createCourier(courier);
 
         // Отправляем запрос без поля password
         Map<String, String>requestBody = new HashMap<>();
-        requestBody.put("login", "yhduLogin");
+        requestBody.put("login", "yhduLhgogin");
         requestBody.put("firstName", "Oleg");
         ValidatableResponse errorResponse = client.sendRequestWithoutPasswordField(requestBody);
 

@@ -29,7 +29,7 @@ public class CourierTests {
 
 
         Courier courier = Courier.create("testfryyui", "12345", "Vasya");
-        ValidatableResponse response = client.createCourier(courier);
+        client.createCourier(courier);
 
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
         loginResponse.extract().jsonPath().getString("id");
@@ -44,7 +44,7 @@ public class CourierTests {
 
 
         Courier courier = Courier.create("testfryyui", "12345", "");
-        ValidatableResponse response = client.createCourier(courier);
+        client.createCourier(courier);
 
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
         loginResponse.extract().jsonPath().getString("id");
@@ -58,6 +58,7 @@ public class CourierTests {
 
 
         Courier courier = Courier.create("testfryyui", "12345", "Vasya");
+        //здесь нужна переменная response
         ValidatableResponse response = client.createCourier(courier);
 
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
@@ -75,6 +76,7 @@ public class CourierTests {
 
 
         Courier courier = Courier.create("testfryyui", "12345", "Vasya");
+        //здесь нужна переменная response
         ValidatableResponse response = client.createCourier(courier);
 
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
@@ -113,6 +115,7 @@ public class CourierTests {
 
 
         Courier courierWithoutLogin = Courier.create("", "12345", "Vasya");
+        //здесь нужна переменная response
         ValidatableResponse response = client.createCourier(courierWithoutLogin);
         response.assertThat().statusCode(400)
                 .body("code", equalTo(400))
@@ -126,6 +129,7 @@ public class CourierTests {
 
 
         Courier courierWithoutPassword = Courier.create("testUser", "", "Vasya");
+        //здесь также нужна переменная response
         ValidatableResponse response = client.createCourier(courierWithoutPassword);
         response.assertThat().statusCode(400)
                 .body("code", equalTo(400))
@@ -143,7 +147,7 @@ public class CourierTests {
         credentialsWithoutLogin.put("password", "1234");
         credentialsWithoutLogin.put("firstName", "TestName");
 
-
+        //здесь также нужна переменная response
         ValidatableResponse response = client.createCourierUsingMap(credentialsWithoutLogin);
 
         response.assertThat().statusCode(400)
@@ -160,7 +164,7 @@ public class CourierTests {
         credentialsWithoutLogin.put("login", "fdfdfdfd");
         credentialsWithoutLogin.put("firstName", "TestName");
 
-
+        //здесь также нужна переменная response
         ValidatableResponse response = client.createCourierUsingMap(credentialsWithoutLogin);
 
         response.assertThat().statusCode(400)
@@ -175,7 +179,7 @@ public class CourierTests {
 
 
         Courier courier = Courier.create("bdgfdfggf", "12345", "Vasya");
-        ValidatableResponse response = client.createCourier(courier);
+        client.createCourier(courier);
 
         Courier secondCourier = Courier.create("bdgfdfggf", "565656", "Petya");
         ValidatableResponse response2 = client.createCourier(secondCourier);

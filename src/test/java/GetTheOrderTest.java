@@ -30,7 +30,6 @@ public class GetTheOrderTest {
     @Description("Получение списка заказов")
     public void getTheOrder() {
 
-        client = new ScooterClientImpl();
         Courier courier = Courier.create("sdngfbnfi", "12345", "Vasya");
         client.createCourier(courier);
         ValidatableResponse loginResponse = client.login(Credentials.fromCourier(courier));
